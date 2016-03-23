@@ -1,0 +1,54 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+
+</head>
+
+
+
+<body ng-app="myapp">
+
+    <!--template KEY is injected into our Custom Directive-->
+    <hello-world></hello-world>
+
+    <!--Custom Directive:  HTML TAG ATTRIBUTE-->
+    <div hello-world></div>
+
+
+
+<script>
+
+angular.module("myapp", [])
+
+    .directive('helloWorld', function () {         //  Name of Directive is camelCase
+
+            //  Directive Definition Object     Directive Configuration Object
+        return {
+            template: "This is the hello world directive!",
+            restrict: 'E'      //  Restrict Option - restrict how option is used
+            //  'E' restrict as ELEMENT only
+            //  'A' restrict as ATTRIBUTE only
+        }
+    });
+
+
+    //  Create a DIRECTIVE:
+    //  METHOD:  .directive( 1, 2 )
+    //  Parameters:
+    //  1.  Name of Directive - In Camel Case
+    //  2.  CallBack Function that RETURNS an Object AND whatever else you tell it to do
+
+
+</script>
+
+</body>
+
+</html>
+

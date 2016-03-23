@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+<body>
+
+<div ng-app="myApp">
+
+    <div ng-controller="myCtrlOne">
+        <h2>myCtrlOne Buttons:</h2>
+        <button ng-click="one()">myCtrlOne- f()one</button><br>
+        <button ng-click="oneX()">myCtrlOne- f()oneX</button>
+
+        <br>
+        <div ng-controller="myCtrlTwo">
+            <h2>myCtrlTwo Buttons:</h2>
+            <button ng-click="one()">myCtrlTwo- f()one)</button><br>
+            <button ng-click="two()">myCtrlTwo- f()two)</button><br>
+            <button ng-click="oneX()">myCtrlTwo- f()oneX)</button>
+
+        </div>
+    </div>
+
+
+
+</div>
+
+<script>
+
+    angular.module('myApp',[])
+            .controller('myCtrlOne',function($scope){
+                $scope.one=function(){console.log('myCtrlOne Scope accessed')};
+                $scope.oneX=function(){console.log('myCtrlOne Scope accessed')}
+            })
+            .controller('myCtrlTwo', function($scope){
+                $scope.two=function(){console.log('myCtrlTwo Scope accessed')};
+                $scope.oneX=function(){console.log('myCtrlTwo Scope accessed')}
+            })
+</script>
+
+</body>
+
+</html>

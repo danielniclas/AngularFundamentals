@@ -1,0 +1,79 @@
+<html ng-app="exampleApp">
+<head>
+    <title>Directives</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+
+    <script>
+        angular.module("exampleApp", [])
+
+                .controller("defaultCtrl", function ($scope) {
+                    $scope.products = [
+                        { name: "Apples", category: "Fruit", price: 1.20, expiry: 10 },
+                        { name: "Bananas", category: "Fruit", price: 2.42, expiry: 7 },
+                        { name: "Pears", category: "Fruit", price: 2.02, expiry: 6 }
+                    ];
+                })
+
+                .directive('unorderedList', function(){
+
+                        return {            //  Return OBJECT (similar to Factory) >>  Directive Definition Object     Directive Configuration Object
+
+                                link: function (scope, element, attribute) {    //  Return the LINK FUNCTION:  with ELEMENT SCOPE, ELEMENT OBJECT, ELEMENT ATTRIBUTES
+                                                                                //  element and attribute are jQuery wrapped
+                                //  GET attribute values:
+                                var dirAttrValue = attribute['unorderedList'];          //  >> Get Attribute of >> unordered-list = "products"  (attribute passed in link function)
+                                var dirListPropAttrValue = attribute['listProperty'];  //  >> Get Attribute of >> list-property = "name"
+
+                                var arraySet = scope[dirAttrValue];              //  var arraySet = scope["products"] = scope[dirAttrValue] = scope.products
+                                                                                 //  scope.products = [ above Array of {Objects} ]
+
+                                var listElem = angular.element("<ul>");           //  CREATE parent <UL> element using JQueryLite..
+
+                                //  *****  DOM MANIPULATION ****
+                                element.append(listElem);                           //  element = unordered-list  ELEMENT   .append(<ul>)
+
+                                if (angular.isArray(arraySet)) {                   //  resultSet = [ARRAY]
+                                    for (var i = 0; i < arraySet.length; i++) {
+                                        /**
+                                         * Creating the HTML template...
+                                         */
+
+                                        var currentItem = arraySet[i];             //  current Object
+                                        console.log("Current Item:  ", currentItem);
+
+                                        listElem.append(angular.element('<li>').text(scope.$eval(dirListPropAttrValue, currentItem))); //  jQuery append() .text()
+                                        listElem.append(angular.element('<li>').text(scope.$eval('name', currentItem)));                //  jQuery append() .text()
+
+                                        //  listElem (<ul>) .append ('<ul>')  .text ( 1 )  1.  scope.$eval(1,2)
+
+                                        //  scope.$eval(1, 2)    >>     Evaluate ONE PROPERTY (name) of current Object  { name: "Apples", category: "Fruit", price: 1.20, expiry: 10 }
+                                        //  1.  objet key
+                                        //  2.  current object
+
+                                    }
+                                    }
+                                },
+                                restrict: 'A,E',
+                                replace: true    //  TRUE:  Replace the DIV
+                        }
+                });
+
+    </script>
+</head>
+<body ng-controller="defaultCtrl">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>Products</h3>
+    </div>
+    <div class="panel-body">
+        <!--<div unordered-list="products" list-property="price | currency"></div>-->
+        <div unordered-list="products" list-property="name"></div>
+    </div>
+</div>
+</body>
+</html>

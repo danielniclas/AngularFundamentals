@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+</head>
+
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+
+    <div>
+        <h2 ng-repeat="pup in puppies"> {{pup}}</h2>
+    </div>
+
+
+</div>
+
+
+<script>
+    angular.module('myApp',[])
+            .controller('myCtrl',function($scope){
+                $scope.puppies=['Mook','Nibblet','Sammy','Koost','Barn'];
+            })
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <style>
+        .red {color:red}
+    </style>
+<body>
+
+<div ng-app="myApp">
+
+        <div ng-init="puppy = 'Barn'">
+
+        <h2 class="red"> myCtrl $scope.dog (Outside myCtrl Controller): {{ dog }}</h2>
+
+        <h2 class="red"> $rootScope.puppy (Outside of myCtrl Controller): {{ puppy }}</h2>
+
+        </div>
+
+    <div ng-controller="myCtrl">
+
+        <h2> myCtrl $scope.dog (Inside myCtrl Controller): {{dog}} </h2>
+
+        <h2> $rootScope.puppy (Inside of myCtrl Controller): {{ puppy }}</h2>
+
+    </div>
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+            app.controller('myCtrl', function($scope) {
+                $scope.dog = "Woofers"
+        });
+
+</script>
+</body>
+</html>

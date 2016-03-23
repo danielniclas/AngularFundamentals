@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <title>Flight Demo App</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+
+    <style>
+        .red {color: red}
+        .color-true {color:#00FF00}
+        .color-false {color:#A8A8A8}
+
+        form .ng-invalid.ng-dirty { background-color: indianred; }
+        form .ng-valid.ng-dirty { background-color: lightgreen; }
+
+        /*.ng-pristine {color:#00FF00}*/
+        /*.ng-dirty {color:#A8A8A8}*/
+
+    </style>
+
+
+    <script>
+        var flightApp = angular.module("flightArrival",[]);
+
+        flightApp.controller("myCtrl", function ($scope) {
+
+            $scope.model = {
+                title: "Employees and Duties",
+                list: [
+                    {firstName: "Joe", lastName: "Smith", duty: "Front End"},
+                    {firstName: "Dan", lastName: "Jones", duty: "Node"},
+                    {firstName: "Bill", lastName: "Bob", duty: "Mongo"}]
+            };
+
+            $scope.person = {};
+            $scope.warning = "Please enter this field";
+
+            $scope.save = function(person){
+                $scope.model.list.push($scope.person);   //  DATA DRIVEN  << add new {flight} object to array
+                $scope.personForm.$setPristine();                       //  Form Controller   $setPristine
+                $scope.person = {};
+            };
+
+            $scope.reset = function() {
+                $scope.personForm.$setPristine();                       //  Form Controller   $setPristine
+                $scope.person = {};
+            };
+
+            $scope.disable = true;
+            $scope.$watch('person', function(newValue, oldValue){       //  WATCHER:  $watch on the flight OBJECT
+                if ($scope.person.firstName && $scope.person.lastName && $scope.person.duty)        //  If all true disable = false
+                {$scope.disable = false;} else {$scope.disable = true;}
+
+            },true);
+
+
+        });
+
+    </script>
+
+
+</head>
+
+<body ng-app="flightArrival" ng-controller="myCtrl">
+
+
+<div class="page-header">
+    <h1>
+        {{model.title}}
+        <span class="label label-default label-primary">{{model.list.length}}</span>
+    </h1>
+</div>
+
+
+<div class="panel">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Duty</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="item in model.list">
+
+            <td>{{$index+1}}</td>
+            <td>{{item.firstName}}</td>
+            <td>{{item.lastName}}</td>
+            <td>{{item.duty}}</td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+
+<div class="container">
+
+    <!--Build Object Called 'person'  with:  person.firstName  person.lastName person.duty -->
+
+    <form name="personForm" class="form-horizontal" autocomplete="off" novalidate>
+
+        <div class="form-group">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">
+                <h2>Employee Entry:</h2>
+                <h3>Validation State of the Form - $scope.personForm.$invalid:
+                    <span class="color-{{personForm.$invalid}}"> {{personForm.$invalid}} </span></h3>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="firstName" class="col-sm-2 control-label">First Name</label>
+            <div class="col-sm-10">
+                <input type="text" name="firstName" class="form-control" id="firstName" placeholder="Enter First Name" ng-model="person.firstName" required>
+                <label ng-show="personForm.firstName.$pristine" class="red">{{warning}}</label>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="lastName" class="col-sm-2 control-label">Last Name</label>
+            <div class="col-sm-10">
+                <input type="text" name="lastName" class="form-control" id="lastName" placeholder="Enter Last Name" ng-model="person.lastName" required>
+                <label ng-show="personForm.lastName.$pristine" class="red">{{warning}}</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="duty" class="col-sm-2 control-label">Duty</label>
+            <div class="col-sm-10">
+                <input type="text" name="duty" class="form-control" id="duty" placeholder="Enter Duty" ng-model="person.duty" required>
+                <label ng-show="personForm.duty.$pristine" class="red">{{warning}}</label>
+            </div>
+        </div>
+
+        <!--Submit Button: -->
+
+
+
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <h2 class="color-{{personForm.$invalid}}">Form is invalid: {{personForm.$invalid}} </h2>
+                <button class="btn btn-success pull-left" ng-click="save(person)" ng-disabled="disable">Save</button>
+                <button class="btn btn-default pull-left" ng-click="reset()">Reset</button>
+            </div>
+        </div>
+
+    </form>
+
+
+</div>
+
+
+<div class="container">
+
+    <h2>JSON Data:</h2>
+    <pre ng-bind="model.list | json"></pre>
+
+</div>
+
+
+</body>
+</html>

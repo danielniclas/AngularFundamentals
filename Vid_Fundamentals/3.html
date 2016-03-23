@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+</head>
+
+    <body>
+
+        <div ng-app>
+
+            <div ng-init="puppies = ['Mook','Koost','Nibblet','Sammy']">
+
+                <ul>
+
+                    <li ng-repeat="pup in puppies"> {{pup}}</li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </body>
+
+</html>

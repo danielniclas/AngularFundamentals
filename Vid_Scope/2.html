@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+<style>
+    .red {color:red}
+</style>
+
+<body>
+
+<div ng-app="myApp">
+
+    <div ng-controller="myCtrlOne">
+        <h2>myCtrlOne Buttons:</h2>
+        <button ng-click="one()">myCtrlOne- f()one</button>
+    </div>
+
+    <br>
+
+    <div ng-controller="myCtrlTwo">
+        <h2>myCtrlTwo Buttons:</h2>
+        <button ng-click="one()">myCtrlTwo- f()one)</button><br>
+        <button ng-click="two()">myCtrlTwo- f()two)</button>
+    </div>
+
+</div>
+
+
+<script>
+
+    angular.module('myApp',[])
+
+            .controller('myCtrlOne',function($scope){
+                $scope.one=function(){
+                    console.log('myCtrlOne Scope accessed');
+                }
+            })
+
+            .controller('myCtrlTwo', function($scope){
+                $scope.two=function(){
+                     console.log('myCtrlTwo Scope accessed');
+                }
+            })
+
+</script>
+
+
+
+
+
+
+
+</body>
+
+
+</html>

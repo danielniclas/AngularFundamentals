@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+</head>
+
+<body>
+
+<div ng-app>
+
+    <div ng-init="puppies = [{name: 'Skoot'},{name:'Pooch'},{name:'Mook'},{name:'Sam'}]">
+
+    <input type="text" ng-model="nameText">
+
+
+        <ul>
+
+            <li ng-repeat="pup in puppies | filter: nameText | orderBy: 'name'">
+                {{pup.name | uppercase}}</li>
+
+        </ul>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

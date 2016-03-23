@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html ng-app="flightArrival">
+<head>
+    <title>Flight Demo App</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+
+    <style>
+        .red {color: red}
+        .color-true {color:#00FF00}
+        .color-false {color:#A8A8A8}
+
+        form .ng-invalid.ng-dirty { background-color: indianred; }
+        form .ng-valid.ng-dirty { background-color: lightgreen; }
+
+        /*.ng-pristine {color:#00FF00}*/
+        /*.ng-dirty {color:#A8A8A8}*/
+
+    </style>
+
+
+    <script>
+        var flightApp = angular.module("flightArrival",[]);
+
+        flightApp.controller("FlightArrivalCtrl", function ($scope) {
+
+            $scope.fligtsInfo = flightsModel;
+            $scope.flight = {};
+
+            $scope.save = function(flight){
+                $scope.fligtsInfo.flightSchedule.push($scope.flight);   //  DATA DRIVEN
+                $scope.flightForm.$setPristine();                       //  Form Controller   $setPristine
+                $scope.flight = {};
+
+            };
+
+            $scope.reset = function() {
+                $scope.flightForm.$setPristine();                       //  Form Controller   $setPristine
+                $scope.flight = {};
+            };
+
+
+            $scope.warning = "The flight ID you entered is a duplicate";
+            var len =  $scope.fligtsInfo.flightSchedule.length;
+
+
+            $scope.$watch('flight.id', function(newValue, oldValue){       //  WATCHER:  $watch on the flight.id Property
+
+                    $scope.show = false;        //  Hide warning  +  Enable start button marker
+                    $scope.disable = true;      //  disable the start button
+
+                    for (i=0; i<len; i++) {
+                        if ($scope.fligtsInfo.flightSchedule[i].id == $scope.flight.id) {
+
+                            $scope.show = true;     //  Show warning
+                            $scope.disable = true;  //  disable the start button
+                        }
+                    }
+                });
+
+
+            $scope.$watch('flight', function(newValue, oldValue){       //  WATCHER:  $watch on the flight OBJECT
+                if ($scope.flight.id&& $scope.flight.num && $scope.flight.code && $scope.flight.dep && $scope.flight.arriv && !$scope.show)        //  If all true disable = false
+                {$scope.disable = false;}   //  Show start button
+
+            },true);
+        });
+
+
+        var flightsModel = {
+            flightPageTitle:"UCSC Demo Flight App",
+            flightSchedule: [
+                {id:"JBU915" ,		num:"A321",	code:"John F Kennedy Intl (KJFK)",				dep:"2015-04-18T13:41:56-05:00",		arriv:1434510780},
+                {id:"UAL1731",		num:"B739",	code:"Houston Bush Int'ctl (KIAH)"	,		    dep:"2015-04-18T14:51:50-05:00",		arriv:1434510598},
+                {id:"DAL2773",		num:"B712",	code:"Los Angeles Intl (KLAX)",				    dep:"2015-04-18T14:61:44-05:00",		arriv:1434510502},
+                {id:"EVA28",		num:"B77W",	code:"Taiwan Taoyuan Int'l (RCTP / TPE)",		dep:"2015-04-18T17:81:44-05:00",		arriv:1434510719},
+                {id:"AMF1150",		num:"B190",	code:"Reno/Tahoe Intl (KRNO)",					dep:"2015-04-18T16:51:44-05:00",		arriv:1434510452},
+                {id:"AAL1799",		num:"A321",	code:"Charlotte/Douglas Intl (KCLT)",			dep:"2015-04-18T12:43:44-05:00",		arriv:1434510440},
+                {id:"CAL4",			num:"B744",	code:"Taiwan Taoyuan Int'l (RCTP / TPE)",		dep:"2015-04-18T11:47:44-05:00",		arriv:1434510783},
+                {id:"UAL1497",		num:"B739",	code:"Minneapolis/St Paul Intl (KMSP)",		    dep:"2015-04-18T15:40:44-05:00",		arriv:1434510428},
+                {id:"DAL445",		num:"B752",	code:"John F Kennedy Intl (KJFK)",				dep:"2015-04-18T10:45:44-05:00",		arriv:1434510703},
+                {id:"UAL522"	,	num:"A320",	code:"San Diego Intl (KSAN)",					dep:"2015-04-18T10:49:44-05:00",		arriv:1434510496},
+                {id:"PAL104",		num:"B77W",	code:"Manila Int'l (RPLL / MNL)",				dep:"2015-04-18T13:51:44-05:00",		arriv:1434510778}]
+        };
+    </script>
+</head>
+
+<body ng-controller="FlightArrivalCtrl">
+
+
+<div class="page-header">
+    <h1>
+        {{fligtsInfo.flightPageTitle}}
+        <span class="label label-default label-primary">{{fligtsInfo.flightSchedule.length}}</span>
+    </h1>
+</div>
+
+
+<div class="panel">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Ident</th>
+            <th>Type</th>
+            <th>From</th>
+            <th>Depart</th>
+            <th>Arrive</th>
+
+        </tr>
+        </thead>
+        <tbody>
+
+
+        <tr ng-repeat="item in fligtsInfo.flightSchedule">
+
+            <td>{{$index+1}}</td>
+            <td>{{item.id}}</td>
+            <td>{{item.num}}</td>
+            <td>{{item.code}}</td>
+            <td>{{item.dep}}</td>
+            <td>{{item.arriv}}</td>
+        </tr>
+
+
+        </tbody>
+    </table>
+</div>
+
+
+<div class="container">
+
+    <form name="flightForm" class="form-horizontal" autocomplete="off" novalidate>
+
+        <div class="form-group">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">
+                <h2>Flight Data Entry:</h2>
+                <h3>Validation State of the Form - $scope.flightForm.$invalid:
+                    <span class="color-{{flightForm.$invalid}}"> {{flightForm.$invalid}} </span></h3>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="ident" class="col-sm-2 control-label">Identification:</label>
+            <div class="col-sm-10">
+                <input type="text" name="flightId" class="form-control" id="ident" placeholder="Enter identification." ng-model="flight.id" required>
+                <label ng-show="flightForm.flightId.$dirty && show" class="red">{{warning}}</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="type" class="col-sm-2 control-label">Type:</label>
+            <div class="col-sm-10">
+                <input type="text" name="flightNum" class="form-control" id="type" placeholder="Enter type." ng-model="flight.num" required>
+                <label for="type" class="red" ng-show="true">This Input is $pristine:
+                    <span class="color-{{flightForm.flightNum.$pristine}}">{{flightForm.flightNum.$pristine}}</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <label for="from" class="col-sm-2 control-label">From:</label>
+            <div class="col-sm-10">
+                <input type="text" name="flightCode" class="form-control" id="from" placeholder="Enter departure from." ng-model="flight.code" required >
+                <label for="from" class="red" ng-show="true">This Input is $dirty:
+                    <span class="color-{{flightForm.flightCode.$dirty}}">{{flightForm.flightCode.$dirty}}</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="depart" class="col-sm-2 control-label">Depart:</label>
+            <div class="col-sm-10">
+                <input type="text" name="flightDep" class="form-control" id="depart" placeholder="Enter departure time." ng-model="flight.dep" required>
+                <label for="depart" class="red" ng-show="true">This Input is $touched:
+                    <span class="color-{{flightForm.flightDep.$touched}}">{{flightForm.flightDep.$touched}}</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="arrive" class="col-sm-2 control-label">Arrive:</label>
+            <div class="col-sm-10">
+                <input type="text" name="flightArriv" class="form-control" id="arrive" placeholder="Enter arrival." ng-model="flight.arriv" required>
+                <label for="arrive" class="red" ng-show="true">This Input is $valid:
+                    <span class="color-{{flightForm.flightArriv.$valid}}">{{flightForm.flightArriv.$valid}}</span>
+                </label>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button class="btn btn-success pull-left" ng-click="save(flight)" ng-disabled="disable">Save</button>
+                <button class="btn btn-default pull-left" ng-click="reset()">Reset</button>
+            </div>
+        </div>
+
+    </form>
+
+
+</div>
+
+
+<div class="container">
+
+    <h2>JSON Data:</h2>
+    <pre ng-bind="fligtsInfo.flightSchedule | json"></pre>
+
+</div>
+
+
+</body>
+</html>
