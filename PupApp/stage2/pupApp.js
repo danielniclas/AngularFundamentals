@@ -23,7 +23,10 @@ var app = angular.module('myApp', ['ngRoute']);
             console.log("PupName: " + pupName);
             $scope.imageName = pupName;
             $scope.truthy = true;
-        }
+        };
+
+        $scope.property2 = "$scope.property2:  This property is ONLY/ALSO available to HTML ELEMENTS linked to myCtrl"
+
     });
 
 
